@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🎓 Voice → Smart Notes</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); opacity: 0.7; }
+            50% { transform: scale(1.1); opacity: 1; }
+        }
+        .mic-pulse {
+            animation: pulse 1s infinite;
+        }
+    </style>
+</head>
+
+<body class="min-h-screen bg-gradient-to-br from-purple-700 to-blue-500 flex items-center justify-center">
+
+    <div class="bg-white/20 backdrop-blur-lg p-10 rounded-3xl shadow-2xl w-full max-w-md text-center">
+
+        <h1 class="text-4xl font-bold text-white mb-4">🎓 Voice → Smart Notes</h1>
+        <p class="text-sm text-white/80 mb-8">Upload your audio and get summaries, notes & keywords instantly</p>
+
+        <form method="POST" enctype="multipart/form-data" action="/" class="flex flex-col items-center gap-4">
+            <label class="flex flex-col items-center cursor-pointer w-full">
+                <div class="w-24 h-24 bg-white/30 rounded-full flex items-center justify-center mb-2 shadow-lg hover:scale-110 transition duration-300 mic-pulse">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 1v22m8-8H4" />
+                    </svg>
+                </div>
+                <span id="file-label" class="text-white text-sm">Click to select audio</span>
+
+                <input type="file" name="audio" id="audio-input" class="hidden" accept="audio/*" required>
+            </label>
+
+            <button type="submit" class="bg-white text-purple-700 px-8 py-3 rounded-full font-semibold hover:bg-purple-100 transition">
+                Generate Notes
+            </button>
+        </form>
+
+        {% if notes %}
+        <div class="mt-6 text-left text-white whitespace-pre-wrap bg-black/20 p-4 rounded-lg">
+            {{ notes }}
+        </div>
+        {% endif %}
+    </div>
+
+    <script>
+        // This script now functions because the IDs match the HTML above
+        document.getElementById('audio-input').onchange = function () {
+            if (this.files && this.files[0]) {
+                document.getElementById('file-label').innerHTML = "Selected: " + this.files[0].name;
+            }
+        };
+    </script>
+</body>
+</html>
